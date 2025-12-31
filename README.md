@@ -37,23 +37,7 @@ The system currently includes:
 The project is developed and tested entirely in simulation before any real-world deployment.
 
 ---
-
-## 📂 Repository Structure
-
-```text
-go2_ws/
-├── src/
-│   ├── unitree_go2_sim/          # Gazebo simulation and launch files
-│   ├── unitree_go2_description/  # Robot description (URDF/Xacro, meshes)
-│   ├── unitree_go2_nav/          # Navigation and SLAM configuration
-│   └── unitree_go2_ros2/         # ROS 2 integration packages
-├── build/                        # Colcon build artifacts (ignored)
-├── install/                      # Colcon install space (ignored)
-├── log/                          # ROS logs (ignored)
-└── README.md
----
-
-Current Status
+## Current Status
 
 ✅ Gazebo Harmonic simulation running
 
@@ -71,23 +55,18 @@ Current Status
 
 This repository represents a stable simulation baseline prior to enabling full locomotion and autonomous navigation behaviors.
 
-Requirements
+## Requirements
 
 The project is developed and tested using the following environment:
 
 Ubuntu 24.04
-
 ROS 2 Jazzy
-
 Gazebo Harmonic
-
 colcon
-
 Python 3.12
-
 Detailed installation and setup instructions will be provided as the project evolves.
 
-Future Work
+## Future Work
 
 Planned extensions of this work include:
 
@@ -101,18 +80,34 @@ Quantitative analysis of SLAM performance and map quality
 
 Docker-based containerization for fully reproducible experiments
 
-Author
+## Author
 
 Florian Muanda
 Master’s Student – AI for smart sensors and actuators/THD
 GitHub: https://github.com/flo-77
 
-License
+## License
 
 This project is intended for academic and research purposes.
 All third-party software and dependencies retain their respective licenses.
 
----
+## 📂 Repository Structure
+
+```text
+go2_ws/
+├── src/
+│   ├── unitree_go2_sim/          # Gazebo simulation and launch files
+│   ├── unitree_go2_description/  # Robot description (URDF/Xacro, meshes)
+│   ├── unitree_go2_nav/          # Navigation and SLAM configuration
+│   └── unitree_go2_ros2/         # ROS 2 integration packages
+├── build/                        # Colcon build artifacts (ignored)
+├── install/                      # Colcon install space (ignored)
+├── log/                          # ROS logs (ignored)
+└── README.md
+
+
+
+
 
 
 
