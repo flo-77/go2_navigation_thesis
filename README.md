@@ -105,10 +105,3 @@ go2_ws/
 ├── log/                          # ROS logs (ignored)
 └── README.md
 
-
-
-
-
-
-
-This project is intended for academic and research purposes.
