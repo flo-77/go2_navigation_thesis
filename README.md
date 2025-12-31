@@ -60,10 +60,15 @@ This repository represents a stable simulation baseline prior to enabling full l
 The project is developed and tested using the following environment:
 
 Ubuntu 24.04
+
 ROS 2 Jazzy
+
 Gazebo Harmonic
+
 colcon
+
 Python 3.12
+
 Detailed installation and setup instructions will be provided as the project evolves.
 
 ## Future Work
