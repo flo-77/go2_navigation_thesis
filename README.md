@@ -51,6 +51,66 @@ go2_ws/
 ├── install/                      # Colcon install space (ignored)
 ├── log/                          # ROS logs (ignored)
 └── README.md
+---
+
+Current Status
+
+✅ Gazebo Harmonic simulation running
+
+✅ Go2 robot spawns upright in indoor environments
+
+✅ LiDAR data available on /scan
+
+✅ SLAM Toolbox publishing /map
+
+✅ Indoor environment support
+
+⬜ Robot locomotion via /cmd_vel (in progress)
+
+⬜ Nav2 autonomous navigation (planned)
+
+This repository represents a stable simulation baseline prior to enabling full locomotion and autonomous navigation behaviors.
+
+Requirements
+
+The project is developed and tested using the following environment:
+
+Ubuntu 24.04
+
+ROS 2 Jazzy
+
+Gazebo Harmonic
+
+colcon
+
+Python 3.12
+
+Detailed installation and setup instructions will be provided as the project evolves.
+
+Future Work
+
+Planned extensions of this work include:
+
+Enabling reliable robot locomotion via /cmd_vel
+
+Full Nav2 stack integration for autonomous navigation
+
+Evaluation of indoor navigation and wall-inspection scenarios
+
+Quantitative analysis of SLAM performance and map quality
+
+Docker-based containerization for fully reproducible experiments
+
+Author
+
+Florian Muanda
+Master’s Student – AI for smart sensors and actuators/THD
+GitHub: https://github.com/flo-77
+
+License
+
+This project is intended for academic and research purposes.
+All third-party software and dependencies retain their respective licenses.
 
 ---
 
