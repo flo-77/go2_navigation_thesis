@@ -4,7 +4,7 @@ This repository contains the simulation, perception, SLAM, and navigation setup 
 
 **“Navigation and SLAM Design for a Quadruped Robot”**
 
-The work focuses on a **Unitree Go2 quadruped robot**, simulated in **ROS 2 Jazzy** with **Gazebo Harmonic**, targeting indoor navigation and wall-inspection use cases.
+The work focuses on a Unitree Go2 quadruped robot, simulated in ROS 2 Jazzy with Gazebo Harmonic, targeting indoor navigation and wall-inspection use cases.
 
 ---
 
