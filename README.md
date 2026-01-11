@@ -39,21 +39,24 @@ The project is developed and tested entirely in simulation before any real-world
 ---
 ## Current Status
 
-✅ Gazebo Harmonic simulation running
+✅ Gazebo Harmonic simulation running (headless, stable)
 
-✅ Go2 robot spawns upright in indoor environments
+✅ Go2 robot spawns upright in custom indoor environments
 
-✅ LiDAR data available on /scan
+✅ LiDAR data available on `/scan`
 
-✅ SLAM Toolbox publishing /map
+✅ SLAM Toolbox mapping functional  
+&nbsp;&nbsp;&nbsp;&nbsp;• Map generation via **LiDAR spinning** (robot stationary)  
+&nbsp;&nbsp;&nbsp;&nbsp;• Map can be saved for later navigation use  
 
-✅ Indoor environment support
-
-⬜ Robot locomotion via /cmd_vel (in progress)
+⚠️ Robot locomotion via `/cmd_vel` not available  
+&nbsp;&nbsp;&nbsp;&nbsp;• Locomotion currently controlled via `JointTrajectoryController`  
+&nbsp;&nbsp;&nbsp;&nbsp;• `/cmd_vel → joint_trajectory` adapter planned  
 
 ⬜ Nav2 autonomous navigation (planned)
 
-This repository represents a stable simulation baseline prior to enabling full locomotion and autonomous navigation behaviors.
+This repository represents a **stable simulation and mapping baseline** prior to enabling full legged locomotion and autonomous navigation behaviors.
+
 
 ## Requirements
 
