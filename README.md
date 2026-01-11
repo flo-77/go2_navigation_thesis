@@ -46,7 +46,7 @@ The project is developed and tested entirely in simulation before any real-world
 ✅ LiDAR data available on `/scan`
 
 ✅ SLAM Toolbox mapping functional  
-&nbsp;&nbsp;&nbsp;&nbsp;• Map generation via **LiDAR spinning** (robot stationary)  
+&nbsp;&nbsp;&nbsp;&nbsp;• Map generation via LiDAR spinning (robot stationary)  
 &nbsp;&nbsp;&nbsp;&nbsp;• Map can be saved for later navigation use  
 
 ⚠️ Robot locomotion via `/cmd_vel` not available  
@@ -55,7 +55,7 @@ The project is developed and tested entirely in simulation before any real-world
 
 ⬜ Nav2 autonomous navigation (planned)
 
-This repository represents a **stable simulation and mapping baseline** prior to enabling full legged locomotion and autonomous navigation behaviors.
+This repository represents a stable simulation and mapping baseline prior to enabling full legged locomotion and autonomous navigation behaviors.
 
 
 ## Requirements
