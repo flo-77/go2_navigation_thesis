@@ -78,15 +78,15 @@ Detailed installation and setup instructions will be provided as the project evo
 
 Planned extensions of this work include:
 
-Enabling reliable robot locomotion via /cmd_vel
+- Implementing a reliable locomotion interface by bridging `/cmd_vel` commands to the legged JointTrajectoryController, enabling teleoperation and planner-driven motion
 
-Full Nav2 stack integration for autonomous navigation
+- Full integration of the Nav2 stack for autonomous indoor navigation using pre-built or online-generated maps
 
-Evaluation of indoor navigation and wall-inspection scenarios
+- Evaluation of autonomous indoor navigation and wall-inspection scenarios in structured environments
 
-Quantitative analysis of SLAM performance and map quality
+- Quantitative analysis of SLAM performance and map quality, including consistency, coverage, and drift
 
-Docker-based containerization for fully reproducible experiments
+- Docker-based containerization to ensure fully reproducible simulation and experimental results
 
 ## Author
 
