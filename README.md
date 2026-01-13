@@ -1,3 +1,11 @@
+Here is a **README.md that is copy-paste ready**.
+You can paste it **directly as-is** into your GitHub repository.
+
+---
+
+```markdown
+# go2_navigation_thesis
+
 ## Navigation and SLAM Design for a Quadruped Robot  
 **Application: Indoor Wall Inspection**
 
@@ -20,16 +28,19 @@ The project is based on **ROS 2 Jazzy** and **Gazebo (Gazebo Sim / Ignition)** a
 
 ## 🏗 Repository Structure
 
+```
+
 go2_navigation_thesis/
 ├── src/
-│ ├── unitree_go2_ros2/
-│ │ └── unitree_go2_sim/
-│ │ └── launch/
-│ │ └── unitree_go2_launch.py
-│ └── unitree_go2_description/
-│ └── worlds/
-│ └── warehouse_local.sdf
+│   ├── unitree_go2_ros2/
+│   │   └── unitree_go2_sim/
+│   │       └── launch/
+│   │           └── unitree_go2_launch.py
+│   └── unitree_go2_description/
+│       └── worlds/
+│           └── warehouse_local.sdf
 
+```
 
 ### Key components
 
@@ -43,8 +54,13 @@ go2_navigation_thesis/
 
 ## 🧱 Warehouse Environment
 
-The warehouse environment is defined locally in: src/unitree_go2_description/worlds/warehouse_local.sdf
+The warehouse environment is defined locally in:
 
+```
+
+src/unitree_go2_description/worlds/warehouse_local.sdf
+
+````
 
 Features:
 - Flat ground plane
@@ -61,7 +77,7 @@ This environment is intentionally simple and structured, making it suitable for:
 
 ## 🚀 How to Run (Fresh Machine / Native Ubuntu)
 
-1️⃣ Clone and build
+### 1️⃣ Clone and build
 
 ```bash
 git clone https://github.com/flo-77/go2_navigation_thesis.git
@@ -70,60 +86,67 @@ cd go2_navigation_thesis
 source /opt/ros/jazzy/setup.bash
 rosdep install --from-paths src --ignore-src -r -y
 
-
 colcon build --symlink-install
 source install/setup.bash
+````
 
-2️⃣ Launch Go2 in the warehouse
+### 2️⃣ Launch Go2 in the warehouse
 
+```bash
 ros2 launch unitree_go2_sim unitree_go2_launch.py \
   world:=src/unitree_go2_description/worlds/warehouse_local.sdf \
   world_init_x:=-8 \
   world_init_y:=-8 \
   world_init_z:=1.0
+```
 
-The robot will spawn standing and stable inside the warehouse.
+The robot will spawn **standing and stable** inside the warehouse.
 
-3️⃣ Basic motion test
+### 3️⃣ Basic motion test
+
+```bash
 ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
   "{linear: {x: 0.2}, angular: {z: 0.0}}" -r 10
+```
 
+---
 
-🧭 SLAM
+## 🧭 SLAM
 
-SLAM is performed using SLAM Toolbox in online asynchronous mode: ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
+SLAM is performed using **SLAM Toolbox** in online asynchronous mode:
+
+```bash
+ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
+```
 
 The robot can rotate in place to build a consistent 2D occupancy map of the warehouse.
 
-🔜 Next Steps (Planned)
-1. SLAM Refinement
+---
 
-Tune scan parameters and update rate
+## 🔜 Next Steps (Planned)
 
-Improve map quality near walls
+### 1. SLAM Refinement
 
-Save final occupancy maps for navigation
+* Tune scan parameters and update rate
+* Improve map quality near walls
+* Save final occupancy maps for navigation
 
-2. Nav2 Integration
+### 2. Nav2 Integration
 
-Configure robot footprint and costmaps
+* Configure robot footprint and costmaps
+* Enable localization using the saved map
+* Autonomous navigation inside the warehouse
 
-Enable localization using the saved map
+### 3. Wall Inspection Camera
 
-Autonomous navigation inside the warehouse
+* Add an RGB or depth camera to the Go2 URDF
+* Mount camera facing sideways or upward
+* Publish camera topics (`/image_raw`)
+* Use navigation + perception for wall-following inspection
 
-3. Wall Inspection Camera
+### 4. Final Pipeline
 
-Add an RGB or depth camera to the Go2 URDF
-
-Mount camera facing sideways or upward
-
-Publish camera topics (/image_raw)
-
-Use navigation + perception for wall-following inspection
-
-4. Final Pipeline
-
+```
 Gazebo Warehouse
    ↓
 Go2 + Sensors
@@ -133,30 +156,35 @@ SLAM Toolbox
 Nav2 (Localization + Planning)
    ↓
 Camera-based Wall Inspection
+```
 
-🎓 Thesis Context
+---
+
+## 🎓 Thesis Context
 
 This work supports a Master’s thesis titled:
 
-“Navigation and SLAM Design for a Quadruped Robot in Indoor Environments”
+**“Navigation and SLAM Design for a Quadruped Robot in Indoor Environments”**
 
-with a practical focus on autonomous wall inspection using a legged platform.
+with a practical focus on **autonomous wall inspection** using a legged platform.
 
-🧠 Design Principles
+---
 
-Offline worlds for reproducibility
+## 🧠 Design Principles
 
-Quadruped platform with non-holonomic constraints
+* Offline worlds for reproducibility
+* Quadruped platform with non-holonomic constraints
+* Incremental development: SLAM → Nav2 → Perception
+* Simulation-first, transferable to real Go2 hardware
 
-Incremental development: SLAM → Nav2 → Perception
+---
 
-Simulation-first, transferable to real Go2 hardware
+## 📌 Notes
 
-📌 Notes
+* The repository is intentionally minimal.
+* External dependencies (Fuel, cloud assets) are avoided.
+* The setup is validated in both virtualized and native Linux environments.
 
-The repository is intentionally minimal.
+---
 
-External dependencies (Fuel, cloud assets) are avoided.
-
-The setup is validated in both virtualized and native Linux environments.
 
