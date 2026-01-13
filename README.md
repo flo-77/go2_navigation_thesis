@@ -21,6 +21,7 @@ The project is based on **ROS 2 Jazzy** and **Gazebo (Gazebo Sim / Ignition)** a
 ## 🏗 Repository Structure
 
 go2_navigation_thesis/
+
 ├── src/
 │ ├── unitree_go2_ros2/
 │ │ └── unitree_go2_sim/
