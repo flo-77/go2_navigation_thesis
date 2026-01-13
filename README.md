@@ -88,7 +88,8 @@ The robot will spawn standing and stable inside the warehouse.
 ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
   "{linear: {x: 0.2}, angular: {z: 0.0}}" -r 10
 
-🧭 ### SLAM
+
+🧭 SLAM
 
 SLAM is performed using SLAM Toolbox in online asynchronous mode: ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
 
