@@ -1,115 +1,160 @@
-# Go2 Navigation and SLAM in Indoor Environments
+## Navigation and SLAM Design for a Quadruped Robot  
+**Application: Indoor Wall Inspection**
 
-This repository contains the simulation, perception, SLAM, and navigation setup developed for my Master's thesis:
+This repository contains the simulation and navigation stack developed for a Master’s thesis focused on **SLAM and autonomous navigation for a quadruped robot (Unitree Go2)** in **indoor environments**, with a target application of **wall inspection**.
 
-**“Navigation and SLAM Design for a Quadruped Robot”**
-
-The work focuses on a Unitree Go2 quadruped robot, simulated in ROS 2 Jazzy with Gazebo Harmonic, targeting indoor navigation and wall-inspection use cases.
-
----
-
-## 📌 Project Scope
-
-The main objectives of this project are:
-
-- Simulation-first development using ROS 2 Jazzy and Gazebo Harmonic  
-- Integration of a quadruped robot (Unitree Go2) with realistic sensors  
-- LiDAR-based SLAM in indoor environments  
-- Autonomous navigation using the ROS 2 Navigation (Nav2) stack  
-- Reproducibility and clean software engineering practices suitable for academic work  
+The project is based on **ROS 2 Jazzy** and **Gazebo (Gazebo Sim / Ignition)** and is designed to be **fully reproducible**, **offline**, and **hardware-agnostic**.
 
 ---
 
-## 🧱 System Overview
+## ✨ Current Capabilities (Baseline)
 
-The system currently includes:
-
-- **Robot**: Unitree Go2 (simulated)
-- **Simulation**: Gazebo Harmonic
-- **Middleware**: ROS 2 Jazzy
-- **Sensors**:
-  - 2D LiDAR (LaserScan → `/scan`)
-  - IMU
-- **SLAM**: SLAM Toolbox
-- **Visualization**: RViz2
-- **Control**: ros2_control (joint effort controllers)
-
-The project is developed and tested entirely in simulation before any real-world deployment.
+✔ Go2 simulated in Gazebo  
+✔ Custom **local warehouse environment** (offline, no Fuel dependency)  
+✔ Stable robot spawn with correct physics  
+✔ Locomotion via `/cmd_vel`  
+✔ SLAM Toolbox integration (mapping verified)  
+✔ Ready for Nav2 and perception extensions  
 
 ---
-## Current Status
 
-✅ Gazebo Harmonic simulation running (headless, stable)
+## 🏗 Repository Structure
 
-✅ Go2 robot spawns upright in custom indoor environments
-
-✅ LiDAR data available on `/scan`
-
-✅ SLAM Toolbox mapping functional  
-&nbsp;&nbsp;&nbsp;&nbsp;• Map generation via LiDAR spinning (robot stationary)  
-&nbsp;&nbsp;&nbsp;&nbsp;• Map can be saved for later navigation use  
-
-⚠️ Robot locomotion via `/cmd_vel` not available  
-&nbsp;&nbsp;&nbsp;&nbsp;• Locomotion currently controlled via `JointTrajectoryController`  
-&nbsp;&nbsp;&nbsp;&nbsp;• `/cmd_vel → joint_trajectory` adapter planned  
-
-⬜ Nav2 autonomous navigation (planned)
-
-This repository represents a stable simulation and mapping baseline prior to enabling full legged locomotion and autonomous navigation behaviors.
-
-
-## Requirements
-
-The project is developed and tested using the following environment:
-
-Ubuntu 24.04
-
-ROS 2 Jazzy
-
-Gazebo Harmonic
-
-colcon
-
-Python 3.12
-
-Detailed installation and setup instructions will be provided as the project evolves.
-
-## Future Work
-
-Planned extensions of this work include:
-
-- Implementing a reliable locomotion interface by bridging `/cmd_vel` commands to the legged JointTrajectoryController, enabling teleoperation and planner-driven motion
-
-- Full integration of the Nav2 stack for autonomous indoor navigation using pre-built or online-generated maps
-
-- Evaluation of autonomous indoor navigation and wall-inspection scenarios in structured environments
-
-- Quantitative analysis of SLAM performance and map quality, including consistency, coverage, and drift
-
-- Docker-based containerization to ensure fully reproducible simulation and experimental results
-
-## Author
-
-Florian Muanda
-Master’s Student – AI for smart sensors and actuators/THD
-GitHub: https://github.com/flo-77
-
-## License
-
-This project is intended for academic and research purposes.
-All third-party software and dependencies retain their respective licenses.
-
-## 📂 Repository Structure
-
-```text
-go2_ws/
+go2_navigation_thesis/
 ├── src/
-│   ├── unitree_go2_sim/          # Gazebo simulation and launch files
-│   ├── unitree_go2_description/  # Robot description (URDF/Xacro, meshes)
-│   ├── unitree_go2_nav/          # Navigation and SLAM configuration
-│   └── unitree_go2_ros2/         # ROS 2 integration packages
-├── build/                        # Colcon build artifacts (ignored)
-├── install/                      # Colcon install space (ignored)
-├── log/                          # ROS logs (ignored)
-└── README.md
+│ ├── unitree_go2_ros2/
+│ │ └── unitree_go2_sim/
+│ │ └── launch/
+│ │ └── unitree_go2_launch.py
+│ └── unitree_go2_description/
+│ └── worlds/
+│ └── warehouse_local.sdf
+
+
+### Key components
+
+- **`unitree_go2_sim`**  
+  Launches Gazebo, spawns the Go2 robot, bridges ROS ↔ Gazebo, and supports loading a custom world via launch arguments.
+
+- **`unitree_go2_description`**  
+  Contains the robot description and a **fully local warehouse environment** (`warehouse_local.sdf`).
+
+---
+
+## 🧱 Warehouse Environment
+
+The warehouse environment is defined locally in: src/unitree_go2_description/worlds/warehouse_local.sdf
+
+
+Features:
+- Flat ground plane
+- Four enclosing walls
+- Three long shelf rows (obstacles)
+- Fully offline (no Gazebo Fuel usage)
+
+This environment is intentionally simple and structured, making it suitable for:
+- SLAM evaluation
+- Navigation benchmarking
+- Wall-following and inspection tasks
+
+---
+
+## 🚀 How to Run (Fresh Machine / Native Ubuntu)
+
+1️⃣ Clone and build
+
+```bash
+git clone https://github.com/flo-77/go2_navigation_thesis.git
+cd go2_navigation_thesis
+
+source /opt/ros/jazzy/setup.bash
+rosdep install --from-paths src --ignore-src -r -y
+
+
+colcon build --symlink-install
+source install/setup.bash
+
+2️⃣ Launch Go2 in the warehouse
+
+ros2 launch unitree_go2_sim unitree_go2_launch.py \
+  world:=src/unitree_go2_description/worlds/warehouse_local.sdf \
+  world_init_x:=-8 \
+  world_init_y:=-8 \
+  world_init_z:=1.0
+
+The robot will spawn standing and stable inside the warehouse.
+
+3️⃣ Basic motion test
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
+  "{linear: {x: 0.2}, angular: {z: 0.0}}" -r 10
+🧭 SLAM
+
+SLAM is performed using SLAM Toolbox in online asynchronous mode: ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
+
+The robot can rotate in place to build a consistent 2D occupancy map of the warehouse.
+
+🔜 Next Steps (Planned)
+1. SLAM Refinement
+
+Tune scan parameters and update rate
+
+Improve map quality near walls
+
+Save final occupancy maps for navigation
+
+2. Nav2 Integration
+
+Configure robot footprint and costmaps
+
+Enable localization using the saved map
+
+Autonomous navigation inside the warehouse
+
+3. Wall Inspection Camera
+
+Add an RGB or depth camera to the Go2 URDF
+
+Mount camera facing sideways or upward
+
+Publish camera topics (/image_raw)
+
+Use navigation + perception for wall-following inspection
+
+4. Final Pipeline
+
+Gazebo Warehouse
+   ↓
+Go2 + Sensors
+   ↓
+SLAM Toolbox
+   ↓
+Nav2 (Localization + Planning)
+   ↓
+Camera-based Wall Inspection
+
+🎓 Thesis Context
+
+This work supports a Master’s thesis titled:
+
+“Navigation and SLAM Design for a Quadruped Robot in Indoor Environments”
+
+with a practical focus on autonomous wall inspection using a legged platform.
+
+🧠 Design Principles
+
+Offline worlds for reproducibility
+
+Quadruped platform with non-holonomic constraints
+
+Incremental development: SLAM → Nav2 → Perception
+
+Simulation-first, transferable to real Go2 hardware
+
+📌 Notes
+
+The repository is intentionally minimal.
+
+External dependencies (Fuel, cloud assets) are avoided.
+
+The setup is validated in both virtualized and native Linux environments.
 
