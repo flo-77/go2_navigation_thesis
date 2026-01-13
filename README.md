@@ -3,7 +3,7 @@
 
 This repository contains the simulation and navigation stack developed for a Master’s thesis focused on **SLAM and autonomous navigation for a quadruped robot (Unitree Go2)** in **indoor environments**, with a target application of **wall inspection**.
 
-The project is based on **ROS 2 Jazzy** and **Gazebo (Gazebo Sim / Ignition)** and is designed to be **fully reproducible**, **offline**, and **hardware-agnostic**.
+The project is based on **ROS 2** and **Gazebo** and is designed to be **fully reproducible**, **offline**, and **hardware-agnostic**.
 
 ---
 
