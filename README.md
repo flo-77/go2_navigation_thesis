@@ -1,11 +1,3 @@
-Here is a **README.md that is copy-paste ready**.
-You can paste it **directly as-is** into your GitHub repository.
-
----
-
-```markdown
-# go2_navigation_thesis
-
 ## Navigation and SLAM Design for a Quadruped Robot  
 **Application: Indoor Wall Inspection**
 
