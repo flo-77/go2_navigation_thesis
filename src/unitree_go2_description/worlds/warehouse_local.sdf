@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="warehouse_local">
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Basic light (no Fuel dependency) -->
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.2 -1</direction>
+    </light>
+
+    <!-- Flat ground plane (no Fuel dependency) -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Simple warehouse walls -->
+    <model name="walls">
+      <static>true</static>
+
+      <link name="north">
+        <pose>0 10 1 0 0 0</pose>
+        <collision name="c"><geometry><box><size>20 0.2 2</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>20 0.2 2</size></box></geometry></visual>
+      </link>
+
+      <link name="south">
+        <pose>0 -10 1 0 0 0</pose>
+        <collision name="c"><geometry><box><size>20 0.2 2</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>20 0.2 2</size></box></geometry></visual>
+      </link>
+
+      <link name="east">
+        <pose>10 0 1 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.2 20 2</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 20 2</size></box></geometry></visual>
+      </link>
+
+      <link name="west">
+        <pose>-10 0 1 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.2 20 2</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 20 2</size></box></geometry></visual>
+      </link>
+    </model>
+
+    <!-- Shelves (obstacles) -->
+    <model name="shelf_row_1">
+      <static>true</static>
+      <link name="link">
+        <pose>-4 0 0.75 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.8 14 1.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.8 14 1.5</size></box></geometry></visual>
+      </link>
+    </model>
+
+    <model name="shelf_row_2">
+      <static>true</static>
+      <link name="link">
+        <pose>0 0 0.75 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.8 14 1.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.8 14 1.5</size></box></geometry></visual>
+      </link>
+    </model>
+
+    <model name="shelf_row_3">
+      <static>true</static>
+      <link name="link">
+        <pose>4 0 0.75 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.8 14 1.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.8 14 1.5</size></box></geometry></visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

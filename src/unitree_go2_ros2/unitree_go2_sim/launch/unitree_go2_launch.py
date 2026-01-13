@@ -5,8 +5,6 @@ from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 
 from launch import LaunchDescription
-from launch.substitutions import TextSubstitution
-
 from launch.actions import (
     DeclareLaunchArgument,
     ExecuteProcess,
@@ -16,7 +14,7 @@ from launch.actions import (
 )
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 
 
 def generate_launch_description():
@@ -27,6 +25,17 @@ def generate_launch_description():
         package="unitree_go2_sim").find("unitree_go2_sim")
     unitree_go2_description = launch_ros.substitutions.FindPackageShare(
         package="unitree_go2_description").find("unitree_go2_description")
+
+    default_world_path = os.path.join(
+        unitree_go2_description, "worlds/default.sdf"
+    )
+
+    declare_world = DeclareLaunchArgument(
+        "world",
+        default_value=default_world_path,
+        description="Path to world SDF file",
+    )
+
     
     joints_config = os.path.join(unitree_go2_sim, "config/joints/joints.yaml")
     ros_control_config = os.path.join(
@@ -65,7 +74,7 @@ def generate_launch_description():
     )
     declare_world_init_x = DeclareLaunchArgument("world_init_x", default_value="0.0")
     declare_world_init_y = DeclareLaunchArgument("world_init_y", default_value="0.0")
-    declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.8")
+    declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.375")
     declare_world_init_heading = DeclareLaunchArgument(
         "world_init_heading", default_value="0.0"
     )
@@ -90,7 +99,7 @@ def generate_launch_description():
     
     # CHAMP controller nodes
     quadruped_controller_node = Node(
-        package="unitree_go2_sim",
+        package="champ_base",
         executable="quadruped_controller_node",
         output="screen",
         parameters=[
@@ -112,7 +121,7 @@ def generate_launch_description():
     )
 
     state_estimator_node = Node(
-        package="unitree_go2_sim",
+        package="champ_base",
         executable="state_estimation_node",
         output="screen",
         parameters=[
@@ -134,7 +143,7 @@ def generate_launch_description():
             {"base_link_frame": base_frame},
             {"use_sim_time": use_sim_time},
             os.path.join(
-                get_package_share_directory("unitree_go2_sim"),
+                get_package_share_directory("champ_base"),
                 "config",
                 "ekf",
                 "base_to_footprint.yaml",
@@ -203,14 +212,12 @@ def generate_launch_description():
     
     # Setup to launch the simulator and Gazebo world
     gz_sim = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-        os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
-    ),
-    launch_arguments={
-        "gz_args": [TextSubstitution(text=""), LaunchConfiguration("world"), TextSubstitution(text=" -r")],
-    }.items(),
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+         launch_arguments={
+            "gz_args": [LaunchConfiguration("world"), TextSubstitution(text=" -r")],
+        }.items(),
     )
-
     
     # Spawn robot in Gazebo Sim
     gazebo_spawn_robot = Node(
@@ -220,13 +227,9 @@ def generate_launch_description():
         arguments=[
             '-name', LaunchConfiguration('robot_name'),
             '-topic', 'robot_description',
-
             '-x', LaunchConfiguration('world_init_x'),
             '-y', LaunchConfiguration('world_init_y'),
             '-z', LaunchConfiguration('world_init_z'),
-
-            "-R", "0",
-            "-P", "0",
             '-Y', LaunchConfiguration('world_init_heading')
         ],
     )
@@ -255,19 +258,6 @@ def generate_launch_description():
             '/joint_group_effort_controller/joint_trajectory@trajectory_msgs/msg/JointTrajectory]gz.msgs.JointTrajectory',
         ],
     )
-    # Bridge LiDAR scan to ROS (/scan)
-    lidar_scan_bridge = Node(
-    package="ros_gz_bridge",
-    executable="parameter_bridge",
-    output="screen",
-    arguments=[
-        "/unitree_lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-        "--ros-args",
-        "-r",
-        "/unitree_lidar:=/scan",
-    ],
-)
-
     
     # Use spawner nodes directly to handle the configuration step. (load → configure → activate)
     controller_spawner_js = TimerAction(
@@ -322,6 +312,7 @@ def generate_launch_description():
             declare_lite,
             declare_ros_control_file,
             declare_gazebo_world,
+            declare_world,
             declare_gui,
             declare_world_init_x,
             declare_world_init_y,
@@ -334,9 +325,10 @@ def generate_launch_description():
             robot_state_publisher_node,
             gazebo_spawn_robot,
             gazebo_bridge,
-            lidar_scan_bridge,
             
             # CHAMP controller nodes
+            quadruped_controller_node,
+            state_estimator_node,
             
             # EKF nodes for localization
             base_to_footprint_ekf,
