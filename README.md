@@ -9,14 +9,76 @@ The project is based on **ROS 2** and **Gazebo** and is designed to be **fully r
 
 ## ✨ Current Capabilities (Baseline)
 
-✔ Go2 simulated in Gazebo  
-✔ Custom **local warehouse environment** (offline, no Fuel dependency)  
-✔ Stable robot spawn with correct physics  
-✔ Locomotion via `/cmd_vel`  
-✔ SLAM Toolbox integration (mapping verified)  
-✔ Ready for Nav2 and perception extensions  
+This repository has been verified to work on the following setup:
+
+OS: Ubuntu 22.04 (native, no VM)
+
+ROS 2: Humble Hawksbill
+
+Simulation: Gazebo (gz / Ignition)
+
+Robot: Unitree Go2
+
+Environment: warehouse_local.sdf
+
+✅ Confirmed working features
+
+Go2 spawns correctly in Gazebo
+
+ros2_control controllers load and activate
+
+/cmd_vel is applied correctly
+
+Robot locomotion works via teleop_twist_keyboard
+
+Odometry (/odom) and TF are valid
 
 ---
+
+### 🟢 Verified Working Setup (ROS 2 Humble)
+
+This repository has been verified to work on the following setup:
+
+* **OS**: Ubuntu 22.04
+* **ROS 2**: Humble Hawksbill
+* **Simulation**: Gazebo (gz / Ignition)
+* **Robot**: Unitree Go2
+* **Environment**: `warehouse_local.sdf`
+
+#### ✅ Confirmed working features
+
+* Go2 spawns correctly in Gazebo
+* `ros2_control` controllers load and activate
+* `/cmd_vel` is applied correctly
+* Robot locomotion works via `teleop_twist_keyboard`
+* Odometry (`/odom`) and TF are valid
+
+#### ⚠️ Important notes
+
+* This setup **requires a clean ROS environment**
+* Do **not** source multiple workspaces at once
+* Before running, always:
+
+  ```bash
+  source /opt/ros/humble/setup.bash
+  source install/setup.bash
+  ```
+
+#### ▶️ Launch simulation
+
+```bash
+ros2 launch unitree_go2_sim unitree_go2_launch.py \
+  world:=src/unitree_go2_description/worlds/warehouse_local.sdf
+```
+
+#### ▶️ Drive the robot
+
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+> Locomotion has been validated on ROS 2 Humble after fixing controller plugin discovery and ensuring a clean overlay environment.
+
 
 ## 🏗 Repository Structure
 
