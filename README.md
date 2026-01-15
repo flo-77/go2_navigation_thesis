@@ -11,7 +11,7 @@ The project is based on **ROS 2** and **Gazebo** and is designed to be **fully r
 
 This repository has been verified to work on the following setup:
 
-OS: Ubuntu 22.04 (native, no VM)
+OS: Ubuntu 22.04
 
 ROS 2: Humble Hawksbill
 
