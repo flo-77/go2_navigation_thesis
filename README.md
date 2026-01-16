@@ -129,7 +129,7 @@ This environment is intentionally simple and structured, making it suitable for:
 
 ---
 
-## 🚀 How to Run (Fresh Machine / Native Ubuntu)
+## 🚀 How to Run
 
 ### 1️⃣ Clone and build
 
@@ -218,9 +218,7 @@ Camera-based Wall Inspection
 
 This work supports a Master’s thesis titled:
 
-**“Navigation and SLAM Design for a Quadruped Robot in Indoor Environments”**
-
-with a practical focus on **autonomous wall inspection** using a legged platform.
+**“Navigation and SLAM Design for a Quadruped Robot”** with a practical focus on autonomous wall inspection.
 
 ---
 
