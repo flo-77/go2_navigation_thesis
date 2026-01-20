@@ -7,34 +7,6 @@ The project is based on **ROS 2** and **Gazebo** and is designed to be **fully r
 
 ---
 
-## ✨ Current Capabilities (Baseline)
-
-This repository has been verified to work on the following setup:
-
-OS: Ubuntu 22.04
-
-ROS 2: Humble Hawksbill
-
-Simulation: Gazebo (gz / Ignition)
-
-Robot: Unitree Go2
-
-Environment: warehouse_local.sdf
-
-✅ Confirmed working features
-
-Go2 spawns correctly in Gazebo
-
-ros2_control controllers load and activate
-
-/cmd_vel is applied correctly
-
-Robot locomotion works via teleop_twist_keyboard
-
-Odometry (/odom) and TF are valid
-
----
-
 ### 🟢 Verified Working Setup (ROS 2 Humble)
 
 This repository has been verified to work on the following setup:
