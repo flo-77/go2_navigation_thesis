@@ -7,7 +7,7 @@ The project is based on **ROS 2** and **Gazebo** and is designed to be **fully r
 
 ---
 
-### 🟢 Verified Working Setup (ROS 2 Humble)
+### 🟢 Verified Working Setup (ROS 2 Jazzy)
 
 This repository has been verified to work on the following setup:
 
@@ -100,6 +100,23 @@ This environment is intentionally simple and structured, making it suitable for:
 - Wall-following and inspection tasks
 
 ---
+
+## Indoor Lightmap World (Gazebo Harmonic)
+
+A new world file is provided to run the Go2 simulation inside the **Indoor Lightmap** environment:
+
+- `src/unitree_go2_description/worlds/indoor_lightmap.sdf`
+
+### Launch Go2 in Indoor Lightmap
+From the workspace root:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+ros2 launch unitree_go2_sim unitree_go2_launch.py \
+  world:=src/unitree_go2_description/worlds/indoor_lightmap.sdf
+
 
 ## 🚀 How to Run
 
