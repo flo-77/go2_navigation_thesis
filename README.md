@@ -15,7 +15,7 @@ This repository has been verified to work on the following setup:
 * **ROS 2**: Humble Hawksbill
 * **Simulation**: Gazebo (gz / Ignition)
 * **Robot**: Unitree Go2
-* **Environment**: `warehouse_local.sdf`
+* **Environment**: `warehouse_local.sdf` and `indoor_lightmap.sdf`
 
 #### ✅ Confirmed working features
 
@@ -49,7 +49,7 @@ ros2 launch unitree_go2_sim unitree_go2_launch.py \
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
-> Locomotion has been validated on ROS 2 Humble after fixing controller plugin discovery and ensuring a clean overlay environment.
+> Locomotion has been validated on ROS 2 Jazzy in Docker after fixing controller plugin discovery and ensuring a clean overlay environment.
 
 
 ## 🏗 Repository Structure
