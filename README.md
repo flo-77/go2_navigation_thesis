@@ -138,7 +138,7 @@ ros2 launch unitree_go2_sim unitree_go2_launch.py \
 ### Nav2 Goal Execution
 The image below shows the Goal Execution
 
-<img src="media/images/Nav2_sending_goal.png" width="800">
+<img src="media/images/Nav2_sending_Goal.png" width="800">
 
 ### Nav2 Path Planning
 The image below shows the Path planning, the trajectory until the Goal
