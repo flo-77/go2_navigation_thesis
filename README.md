@@ -163,10 +163,6 @@ The image below shows the completed occupancy grid map after the robot explored 
 
 ---
 
-### RViz Navigation Visualization
-
-<img src="media/images/slam_rviz.png" width="800">
-
 ## 🎥 Navigation Videos
 
 ### First Navigation Trial
