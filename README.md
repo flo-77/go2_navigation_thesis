@@ -213,7 +213,7 @@ Dynamic obstacle handling
 RViz-based visualization and debugging
 Dockerized ROS 2 reproducible workflow
 
-###🔮 Future Work
+### Future Work
 
 Potential future improvements include:
 
