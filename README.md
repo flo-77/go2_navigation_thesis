@@ -1,6 +1,6 @@
 # GO2 Navigation Thesis
 
-## Application: Autonomous Navigation and SLAM for a Quadruped Robot
+## Autonomous Navigation and SLAM for a Quadruped Robot
 
 This repository contains the complete simulation, mapping, localization, and navigation framework developed for a Master’s thesis focused on **Navigation and Slam_Design for Quadruped robot** in indoor warehouse environments.
 
