@@ -2,7 +2,7 @@
 
 ## Autonomous Navigation and SLAM for a Quadruped Robot
 
-This repository contains the complete simulation, mapping, localization, and navigation framework developed for a Master’s thesis focused on **Navigation and Slam_Design for Quadruped robot** in indoor warehouse environments.
+This repository contains the complete simulation, mapping, localization, and navigation framework developed for a Master’s thesis focused on **Navigation and Slam-Design for Quadruped robot** in indoor warehouse environments.
 
 The project integrates **ROS 2 Jazzy**, **Nav2**, **slam_toolbox**, **EKF sensor fusion**, and **Gazebo simulation** within a fully containerized Docker workflow.
 
