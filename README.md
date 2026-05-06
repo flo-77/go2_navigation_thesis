@@ -1,139 +1,125 @@
-## Navigation and SLAM Design for a Quadruped Robot  
-**Application: Indoor Wall Inspection**
+# GO2 Navigation Thesis
 
-This repository contains the simulation and navigation stack developed for a Master’s thesis focused on **SLAM and autonomous navigation for a quadruped robot (Unitree Go2)** in **indoor environments**, with a target application of **wall inspection**.
+## Application: Autonomous Navigation and SLAM for a Quadruped Robot
 
-The project is based on **ROS 2** and **Gazebo** and is designed to be **fully reproducible**, **offline**, and **hardware-agnostic**.
+This repository contains the complete simulation, mapping, localization, and navigation framework developed for a Master’s thesis focused on **SLAM and autonomous navigation for the Unitree GO2 quadruped robot** in indoor warehouse environments.
+
+The project integrates **ROS 2 Jazzy**, **Nav2**, **slam_toolbox**, **EKF sensor fusion**, and **Gazebo simulation** within a fully containerized Docker workflow.
+
+The objective of the project is to create a reproducible and modular navigation framework capable of:
+
+- Autonomous waypoint navigation
+- SLAM map generation
+- Localization and path planning
+- Dynamic obstacle navigation
+- Indoor warehouse inspection simulation
 
 ---
 
-### 🟢 Verified Working Setup (ROS 2 Jazzy)
+## 🟢 Verified Working Setup
 
 This repository has been verified to work on the following setup:
 
-* **OS**: Ubuntu 22.04
-* **ROS 2**: Humble Hawksbill
-* **Simulation**: Gazebo (gz / Ignition)
-* **Robot**: Unitree Go2
-* **Environment**: `warehouse_local.sdf` and `indoor_lightmap.sdf`
+- **OS:** Ubuntu 22.04
+- **ROS 2:** Jazzy Jalisco
+- **Simulation:** Gazebo / Ignition
+- **Robot:** Unitree GO2
+- **SLAM:** slam_toolbox
+- **Navigation:** Nav2
+- **Localization:** EKF (`robot_localization`)
+- **Containerization:** Docker
 
-#### ✅ Confirmed working features
+---
 
-* Go2 spawns correctly in Gazebo
-* `ros2_control` controllers load and activate
-* `/cmd_vel` is applied correctly
-* Robot locomotion works via `teleop_twist_keyboard`
-* Odometry (`/odom`) and TF are valid
+## ✅ Confirmed Working Features
 
-#### ⚠️ Important notes
+- GO2 spawns correctly in Gazebo
+- `ros2_control` controllers load successfully
+- `/cmd_vel` commands are applied correctly
+- Robot locomotion works using keyboard teleoperation
+- TF tree and odometry are valid
+- slam_toolbox mapping is operational
+- Occupancy grid maps are generated successfully
+- Nav2 path planning and navigation work correctly
+- Dynamic obstacle navigation tested successfully
+- RViz visualization configured and functional
 
-* This setup **requires a clean ROS environment**
-* Do **not** source multiple workspaces at once
-* Before running, always:
+---
 
-  ```bash
-  source /opt/ros/humble/setup.bash
-  source install/setup.bash
-  ```
+## 📁 Repository Structure
 
-#### ▶️ Launch simulation
-
-```bash
-ros2 launch unitree_go2_sim unitree_go2_launch.py \
-  world:=src/unitree_go2_description/worlds/warehouse_local.sdf
-```
-
-#### ▶️ Drive the robot
-
-```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-
-> Locomotion has been validated on ROS 2 Jazzy in Docker after fixing controller plugin discovery and ensuring a clean overlay environment.
-
-
-## 🏗 Repository Structure
-
-```
-
-go2_navigation_thesis/
+```text
+.
 ├── src/
-│   ├── unitree_go2_ros2/
-│   │   └── unitree_go2_sim/
-│   │       └── launch/
-│   │           └── unitree_go2_launch.py
-│   └── unitree_go2_description/
-│       └── worlds/
-│           └── warehouse_local.sdf
+│   ├── go2_bringup/
+│   ├── unitree_go2_nav/
+│   └── unitree_go2_ros2/
+│
+├── maps/
+│   ├── map_01_baseline.*
+│   ├── map_03_failed_motion.*
+│   ├── map_04_stable_refined.*
+│   └── map_05_final.*
+│
+├── media/
+│   ├── images/
+│   └── videos/
+│
+├── slam_params_fast.yaml
+├── slam_params_run2.yaml
+├── robot.urdf
+└── README.md
 
+## ⚙️ Docker Setup
+
+### Build Docker Container
+
+```bash
+docker compose build
 ```
 
-### Key components
+### Start Docker Container
 
-- **`unitree_go2_sim`**  
-  Launches Gazebo, spawns the Go2 robot, bridges ROS ↔ Gazebo, and supports loading a custom world via launch arguments.
-
-- **`unitree_go2_description`**  
-  Contains the robot description and a **fully local warehouse environment** (`warehouse_local.sdf`).
-
----
-
-## 🧱 Warehouse Environment
-
-The warehouse environment is defined locally in:
-
+```bash
+docker compose up -d
 ```
 
-src/unitree_go2_description/worlds/warehouse_local.sdf
+### Check Running Containers
 
-````
+```bash
+docker ps
+```
 
-Features:
-- Flat ground plane
-- Four enclosing walls
-- Three long shelf rows (obstacles)
-- Fully offline (no Gazebo Fuel usage)
+### Enter Running Container
 
-This environment is intentionally simple and structured, making it suitable for:
-- SLAM evaluation
-- Navigation benchmarking
-- Wall-following and inspection tasks
+```bash
+docker exec -it go2_jazzy bash
+```
 
----
-
-## Indoor Lightmap World (Gazebo Harmonic)
-
-A new world file is provided to run the Go2 simulation inside the **Indoor Lightmap** environment:
-
-- `src/unitree_go2_description/worlds/indoor_lightmap.sdf`
-
-### Launch Go2 in Indoor Lightmap
-From the workspace root:
+### Source ROS 2 Workspace
 
 ```bash
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
+```
 
-ros2 launch unitree_go2_sim unitree_go2_launch.py \
-  world:=src/unitree_go2_description/worlds/indoor_lightmap.sdf
-
-
-## 🚀 How to Run
-
-### 1️⃣ Clone and build
+### Build Workspace
 
 ```bash
-git clone https://github.com/flo-77/go2_navigation_thesis.git
-cd go2_navigation_thesis
-
-source /opt/ros/jazzy/setup.bash
-rosdep install --from-paths src --ignore-src -r -y
-
 colcon build --symlink-install
-source install/setup.bash
-````
+```
 
-### 2️⃣ Launch Go2 in the warehouse
+## 🗺️ Launch SLAM
+
+The SLAM pipeline uses `slam_toolbox`.
+
+```bash
+ros2 launch slam_toolbox online_async_launch.py
+```
+
+---
+
+## 🚀 Launch Navigation
 
 ```bash
 ros2 launch unitree_go2_sim unitree_go2_launch.py \
@@ -143,89 +129,105 @@ ros2 launch unitree_go2_sim unitree_go2_launch.py \
   world_init_z:=1.0
 ```
 
-The robot will spawn **standing and stable** inside the warehouse.
+---
 
-### 3️⃣ Basic motion test
+## 🧭 Navigation Results
+
+### GO2 Reached Navigation Goal
+
+<img src="media/images/Go2_reached_Goal.png" width="800">
+
+---
+
+### Nav2 Goal Execution
+
+<img src="media/images/Nav2_sending_goal.png" width="800">
+
+---
+
+## 🗺️ SLAM Mapping Process
+
+### Initial Mapping Stage
+
+The image below shows the beginning of the SLAM mapping process using `slam_toolbox`.
+
+<img src="media/images/slam_rviz1.png" width="800">
+
+---
+
+### Final Mapping Result
+
+The image below shows the completed occupancy grid map after the robot explored the warehouse environment.
+
+<img src="media/images/slam_rviz2.png" width="800">
+
+---
+
+### RViz Navigation Visualization
+
+<img src="media/images/slam_rviz.png" width="800">
+
+## 🎥 Navigation Videos
+
+### First Navigation Trial
+
+The following video demonstrates the GO2 robot successfully reaching a navigation goal using the Nav2 stack.
+
+[▶️ Watch First Navigation Trial](media/videos/nav2_goal_trial.mp4)
+
+---
+
+### Dynamic Obstacle Navigation
+
+The following experiment demonstrates autonomous navigation in the presence of dynamic obstacles inside the warehouse environment.
+
+[▶️ Watch Dynamic Obstacle Navigation](media/videos/Nav2_dynamic_obstacle.mp4)
+
+### ⚙️ Important Configuration Files
+
+## EKF Configuration
 
 ```bash
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
-  "{linear: {x: 0.2}, angular: {z: 0.0}}" -r 10
+src/unitree_go2_ros2/champ_base/config/ekf/
 ```
-
----
-
-## 🧭 SLAM
-
-SLAM is performed using **SLAM Toolbox** in online asynchronous mode:
-
+## SLAM Parameters
 ```bash
-ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
+slam_params_fast.yaml
+slam_params_run2.yaml
 ```
 
-The robot can rotate in place to build a consistent 2D occupancy map of the warehouse.
-
----
-
-## 🔜 Next Steps (Planned)
-
-### 1. SLAM Refinement
-
-* Tune scan parameters and update rate
-* Improve map quality near walls
-* Save final occupancy maps for navigation
-
-### 2. Nav2 Integration
-
-* Configure robot footprint and costmaps
-* Enable localization using the saved map
-* Autonomous navigation inside the warehouse
-
-### 3. Wall Inspection Camera
-
-* Add an RGB or depth camera to the Go2 URDF
-* Mount camera facing sideways or upward
-* Publish camera topics (`/image_raw`)
-* Use navigation + perception for wall-following inspection
-
-### 4. Final Pipeline
-
-```
-Gazebo Warehouse
-   ↓
-Go2 + Sensors
-   ↓
-SLAM Toolbox
-   ↓
-Nav2 (Localization + Planning)
-   ↓
-Camera-based Wall Inspection
+## RViz Configuration
+```bash
+src/unitree_go2_ros2/unitree_go2_sim/rviz/rviz.rviz
 ```
 
----
+### Results
 
-## 🎓 Thesis Context
+The project successfully achieved:
 
-This work supports a Master’s thesis titled:
+Stable SLAM map generation
+Autonomous navigation using Nav2
+Improved localization using EKF
+Warehouse environment navigation
+Dynamic obstacle handling
+RViz-based visualization and debugging
+Dockerized ROS 2 reproducible workflow
 
-**“Navigation and SLAM Design for a Quadruped Robot”** with a practical focus on autonomous wall inspection.
+###🔮 Future Work
 
----
+Potential future improvements include:
 
-## 🧠 Design Principles
+Real-world deployment on physical GO2 hardware
+Improved obstacle avoidance
+Visual SLAM integration
+Multi-floor mapping
+IMU and visual odometry fusion
+Autonomous inspection task planning
 
-* Offline worlds for reproducibility
-* Quadruped platform with non-holonomic constraints
-* Incremental development: SLAM → Nav2 → Perception
-* Simulation-first, transferable to real Go2 hardware
+### Author
 
----
+Florian Muanda, M. Eng in AI for Smart Sensors and Actuators - THD
 
-## 📌 Notes
+### License
 
-* The repository is intentionally minimal.
-* External dependencies (Fuel, cloud assets) are avoided.
-* The setup is validated in both virtualized and native Linux environments.
-
----
-
-
+This repository is intended for academic and research purposes.
