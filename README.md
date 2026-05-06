@@ -70,6 +70,8 @@ This repository has been verified to work on the following setup:
 ├── robot.urdf
 └── README.md
 
+---
+```
 ## ⚙️ Docker Setup
 
 ### Build Docker Container
