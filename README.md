@@ -135,15 +135,23 @@ ros2 launch unitree_go2_sim unitree_go2_launch.py \
 
 ## 🧭 Navigation Results
 
+### Nav2 Goal Execution
+The image below shows the Goal Execution
+
+<img src="media/images/Nav2_sending_goal.png" width="800">
+
+### Nav2 Path Planning
+The image below shows the Path planning, the trajectory until the Goal
+<img src="media/images/Nav_Path_planning.png" width="800">
+
 ### GO2 Reached Navigation Goal
+The image below shows the Go2 reaching the Goal successfully
 
 <img src="media/images/Go2_reached_Goal.png" width="800">
 
 ---
 
-### Nav2 Goal Execution
 
-<img src="media/images/Nav2_sending_goal.png" width="800">
 
 ---
 
