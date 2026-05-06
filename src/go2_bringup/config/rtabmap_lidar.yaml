@@ -1,0 +1,31 @@
+rtabmap:
+  ros__parameters:
+    use_sim_time: true
+
+    # Frames (match your TF tree)
+    frame_id: base_link
+    odom_frame_id: odom
+    map_frame_id: map
+
+    # Inputs: 3D LiDAR point cloud
+    subscribe_scan: false
+    subscribe_scan_cloud: true
+    scan_cloud_topic: /velodyne_points/points
+
+    # Publish TF map->odom so RViz/Nav2 can use the "map" frame
+    publish_tf: true
+
+    # Create 2D occupancy grid for Nav2
+    publish_map: true
+    grid_from_depth: false
+    Grid/FromDepth: "false"
+    Grid/3D: "false"
+    Grid/RayTracing: "true"
+    Grid/CellSize: "0.05"
+    Grid/RangeMax: "30.0"
+
+    # SLAM behavior (safe defaults)
+    Rtabmap/DetectionRate: "2.0"
+    Mem/IncrementalMemory: "true"
+    Mem/InitWMWithAllNodes: "false"
+    RGBD/Enabled: "false"

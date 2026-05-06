@@ -1,15 +1,13 @@
-# ROS 2
 build/
 install/
 log/
 
-# Python
 __pycache__/
 *.pyc
 
-# VS Code
 .vscode/
-
-# OS
 .DS_Store
-unitree_ros2_DISABLED/
+
+*.bag
+*.db3
+*.mcap

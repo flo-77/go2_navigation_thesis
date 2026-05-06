@@ -30,6 +30,6 @@ base_to_footprint_ekf:
                   true, true, true,    # Use orientation (roll, pitch, yaw)
                   false, false, false,
                   true, true, true,    # Use angular velocity (vroll, vpitch, vyaw)
-                  true, true, true]    # Use linear acceleration (ax, ay, az)
+                  false, false, false]    # Use linear acceleration (ax, ay, az)
     odom_frame: base_footprint
     world_frame: base_footprint

@@ -74,7 +74,7 @@ def generate_launch_description():
     )
     declare_world_init_x = DeclareLaunchArgument("world_init_x", default_value="0.0")
     declare_world_init_y = DeclareLaunchArgument("world_init_y", default_value="0.0")
-    declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.375")
+    declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.5")
     declare_world_init_heading = DeclareLaunchArgument(
         "world_init_heading", default_value="0.0"
     )
@@ -120,71 +120,18 @@ def generate_launch_description():
         remappings=[("/cmd_vel/smooth", "/cmd_vel")],
     )
 
-    state_estimator_node = Node(
-        package="champ_base",
-        executable="state_estimation_node",
-        output="screen",
-        parameters=[
-            {"use_sim_time": use_sim_time},
-            {"orientation_from_imu": True},
-            {"urdf": Command(['xacro ', LaunchConfiguration('unitree_go2_description_path')])},
-            joints_config,
-            links_config,
-            gait_config,
-        ],
-    )
-
-    base_to_footprint_ekf = Node(
-        package="robot_localization",
-        executable="ekf_node",
-        name="base_to_footprint_ekf",
-        output="screen",
-        parameters=[
-            {"base_link_frame": base_frame},
-            {"use_sim_time": use_sim_time},
-            os.path.join(
-                get_package_share_directory("champ_base"),
-                "config",
-                "ekf",
-                "base_to_footprint.yaml",
-            ),
-        ],
-        remappings=[("odometry/filtered", "odom/local")],
-    )
-
-    footprint_to_odom_ekf = Node(
-        package="robot_localization",
-        executable="ekf_node",
-        name="footprint_to_odom_ekf",
-        output="screen",
-        parameters=[
-            {"use_sim_time": use_sim_time},
-            {"base_link_frame": "base_footprint"},
-            {"odom_frame": "odom"},
-            {"world_frame": "odom"},
-            {"publish_tf": True},
-            {"frequency": 50.0},
-            {"two_d_mode": True},
-            {"odom0": "odom/raw"},
-            {"odom0_config": [False, False, False, False, False, False, True, True, False, False, False, True, False, False, False]},
-            {"imu0": "imu/data"},
-            {"imu0_config": [False, False, False, False, False, True, False, False, False, False, False, True, False, False, False]},
-        ],
-        remappings=[("odometry/filtered", "odom")],
-    )
-
     # Go2 static frame connection (map -> odom)
-    map_to_odom_tf_node = Node(
-        package='tf2_ros',
-        name='map_to_odom_tf_node',
-        executable='static_transform_publisher',
-        parameters=[{'use_sim_time': use_sim_time}],
-        arguments=[
-            '--x', '0', '--y', '0', '--z', '0',
-            '--roll', '0', '--pitch', '0', '--yaw', '0',
-            '--frame-id', 'map', '--child-frame-id', 'odom'
-        ],
-    )
+    # map_to_odom_tf_node = Node(
+    #   package='tf2_ros',
+    #   name='map_to_odom_tf_node',
+    #   executable='static_transform_publisher',
+    #   parameters=[{'use_sim_time': use_sim_time}],
+    #   arguments=[
+    #       '--x', '0', '--y', '0', '--z', '0',
+    #       '--roll', '0', '--pitch', '0', '--yaw', '0',
+    #       '--frame-id', 'map', '--child-frame-id', 'odom'
+    #    ],
+    #)
     
     # Go2 URDF connection (base_footprint -> base_link)  
     base_footprint_to_base_link_tf_node = Node(
@@ -247,18 +194,42 @@ def generate_launch_description():
             '/imu/data@sensor_msgs/msg/Imu@gz.msgs.IMU',
             '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
             '/joint_states@sensor_msgs/msg/JointState@gz.msgs.Model',
-            '/velodyne_points/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked',
-            '/unitree_lidar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked',
+            '/velodyne_points/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/unitree_lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            
             # '/velodyne_points@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
-            '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-            '/rgb_image@sensor_msgs/msg/Image@gz.msgs.Image',
+            '/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/rgb_image@sensor_msgs/msg/Image[gz.msgs.Image',
             
             # ROS to Gazebo
             '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
             '/joint_group_effort_controller/joint_trajectory@trajectory_msgs/msg/JointTrajectory]gz.msgs.JointTrajectory',
         ],
     )
-    
+
+    footprint_to_odom_ekf = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        name="footprint_to_odom_ekf",
+        output="screen",
+        parameters=[
+            {"use_sim_time": use_sim_time},
+            {"base_link_frame": "base_link"},
+            {"odom_frame": "odom"},
+            {"world_frame": "odom"},
+            {"publish_tf": True},
+            {"frequency": 50.0},
+            {"two_d_mode": True},
+            {"odom0": "/odom"},
+            {"odom0_config": [True, True, False,
+                              False, False, True,
+                              True, True, False,
+                              False, False, True,
+                              False, False, False]},
+        ],
+        remappings=[("odometry/filtered", "/odometry/filtered")],
+    )
     # Use spawner nodes directly to handle the configuration step. (load → configure → activate)
     controller_spawner_js = TimerAction(
         period=20.0,  # Wait for Gazebo to fully initialize
@@ -302,7 +273,7 @@ def generate_launch_description():
             )
         ]
     )
-    
+
     return LaunchDescription(
         [
             # Launch arguments
@@ -328,14 +299,11 @@ def generate_launch_description():
             
             # CHAMP controller nodes
             quadruped_controller_node,
-            state_estimator_node,
-            
-            # EKF nodes for localization
-            base_to_footprint_ekf,
-            footprint_to_odom_ekf,
             
             # TF publishers for frame connections
-            map_to_odom_tf_node,
+            footprint_to_odom_ekf,
+
+            # map_to_odom_tf_node,
             base_footprint_to_base_link_tf_node,
             
             # Controller spawners that handle the complete lifecycle
