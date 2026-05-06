@@ -203,24 +203,22 @@ src/unitree_go2_ros2/unitree_go2_sim/rviz/rviz.rviz
 
 The project successfully achieved:
 
-Stable SLAM map generation
-Autonomous navigation using Nav2
-Improved localization using EKF
-Warehouse environment navigation
-Dynamic obstacle handling
-RViz-based visualization and debugging
-Dockerized ROS 2 reproducible workflow
+- Stable SLAM map generation
+- Autonomous navigation using Nav2
+- Improved localization using EKF
+- Warehouse environment navigation
+- Dynamic obstacle handling
+- RViz-based visualization and debugging
+- Dockerized ROS 2 reproducible workflow
 
 ### Future Work
 
 Potential future improvements include:
 
-Real-world deployment on physical GO2 hardware
-Improved obstacle avoidance
-Visual SLAM integration
-Multi-floor mapping
-IMU and visual odometry fusion
-Autonomous inspection task planning
+- Real-world deployment on physical GO2 hardware (ongoing)
+- Improved obstacle avoidance
+- Visual SLAM integration
+- Autonomous inspection task planning
 
 ### Author
 
